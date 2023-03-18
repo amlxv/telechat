@@ -5,7 +5,8 @@
   "main": "src/bot.js",
   "scripts": {
     "build": "tsc",
-    "start": "pnpm build && node dist/bot.js"
+    "dev": "pnpm build && node dist/bot.js",
+    "production": "node dist/bot.js"
   },
   "type": "module",
   "keywords": [],
