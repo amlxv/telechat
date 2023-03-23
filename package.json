@@ -1,7 +1,7 @@
 {
-  "name": "tgpt",
+  "name": "telechat",
   "version": "1.0.0",
-  "description": "",
+  "description": "A Telegram chatbot that uses OpenAI's GPT-3 API to generate responses to messages.",
   "main": "src/bot.js",
   "scripts": {
     "build": "tsc",
@@ -9,7 +9,13 @@
     "production": "node dist/bot.js"
   },
   "type": "module",
-  "keywords": [],
+  "keywords": [
+    "telechat",
+    "telegram",
+    "chatbot",
+    "gpt-3",
+    "openai"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
