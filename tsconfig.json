@@ -2,9 +2,9 @@
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
-    "rootDir": "./src/",
+    "rootDir": "src",
     "moduleResolution": "node",
-    "outDir": "./dist",
+    "outDir": "dist",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
