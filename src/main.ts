@@ -61,7 +61,6 @@ const handleRequest = async (
       role: 'user',
       content: ctx.message.text,
     });
-
     logger.info('Processing request...');
 
     let responseText = 'Wait a second...';
