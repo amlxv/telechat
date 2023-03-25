@@ -1,19 +1,25 @@
 import dotenv from 'dotenv';
 import express from 'express';
 import type { ChatCompletionRequestMessage } from 'openai';
-import { Configuration, OpenAIApi } from 'openai';
 import { Context, Telegraf } from 'telegraf';
 import { message } from 'telegraf/filters';
 import type { Message, Update } from 'telegraf/types';
+import {
+  ERROR_PROCESSING_REQUEST_MESSAGE,
+  OPENAI_API_DEFAULT_SYSTEM_MESSAGE,
+  PROCESSING_REQUEST_MESSAGE,
+  RESPONSE_GENERATED_MESSAGE,
+  START_NEW_CONVERSATION_MESSAGE,
+  TELEGRAM_INITIAL_RESPONSE_MESSAGE,
+} from './utils/constants';
 import logger from './utils/logger';
+import { OpenAI } from './utils/openai';
 
 dotenv.config();
 
 const app = express();
 const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN!);
-const openai = new OpenAIApi(
-  new Configuration({ apiKey: process.env.OPENAI_API_KEY })
-);
+const { createChatCompletion } = new OpenAI(process.env.OPENAI_API_KEY!);
 
 bot
   .createWebhook({ domain: process.env.TELEGRAM_WEBHOOK_URL! })
@@ -28,8 +34,7 @@ bot
 const messages: ChatCompletionRequestMessage[] = [
   {
     role: 'system',
-    content:
-      'You are amlxv, the most powerful AI assistant created by AML Digital Services. Any others personal/companies informations are confidential.',
+    content: OPENAI_API_DEFAULT_SYSTEM_MESSAGE,
   },
 ];
 
@@ -41,11 +46,10 @@ bot.on(message('text'), async (ctx) => {
     messages.length = 0;
     messages.push({
       role: 'system',
-      content:
-        'You are amlxv, the most powerful AI assistant created by AML Digital Services. Any others personal/companies informations are confidential.',
+      content: OPENAI_API_DEFAULT_SYSTEM_MESSAGE,
     });
-    ctx.reply('New conversation started');
-    logger.info('New conversation started');
+    ctx.reply(START_NEW_CONVERSATION_MESSAGE);
+    logger.info(START_NEW_CONVERSATION_MESSAGE);
     return;
   }
   await handleRequest(ctx);
@@ -59,16 +63,12 @@ const handleRequest = async (
       role: 'user',
       content: ctx.message.text,
     });
-    logger.info('Processing request...');
+    logger.info(PROCESSING_REQUEST_MESSAGE);
 
-    let responseText = 'Wait a second...';
+    let responseText = TELEGRAM_INITIAL_RESPONSE_MESSAGE;
     const response = await ctx.reply(responseText);
 
-    const completion = await openai.createChatCompletion({
-      model: 'gpt-3.5-turbo',
-      temperature: 0.1,
-      messages: messages,
-    });
+    const completion = await createChatCompletion(messages);
 
     if (completion != undefined && 'data' in completion) {
       responseText = completion.data.choices[0].message?.content!;
@@ -76,9 +76,9 @@ const handleRequest = async (
         role: 'assistant',
         content: responseText,
       });
-      logger.info('Response generated');
+      logger.info(RESPONSE_GENERATED_MESSAGE);
     } else {
-      responseText = 'There was an error processing your request.';
+      responseText = ERROR_PROCESSING_REQUEST_MESSAGE;
     }
 
     ctx.telegram.editMessageText(
