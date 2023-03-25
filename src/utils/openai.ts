@@ -8,13 +8,13 @@ import {
 import logger from './logger';
 
 export class OpenAI {
-  private apiKey: string;
-  private client: OpenAIApi;
+  #apiKey: string;
+  #client: OpenAIApi;
 
   constructor(apiKey: string) {
-    this.apiKey = apiKey;
-    this.client = this.getClient();
-    this.verifyAPIKey()
+    this.#apiKey = apiKey;
+    this.#client = this.#getClient();
+    this.#verifyAPIKey()
       .then(() => {
         logger.info("OpenAI's API key is valid");
       })
@@ -24,14 +24,14 @@ export class OpenAI {
       });
   }
 
-  private getClient() {
+  #getClient() {
     const configuration = new Configuration({
-      apiKey: this.apiKey,
+      apiKey: this.#apiKey,
     });
     return new OpenAIApi(configuration);
   }
 
-  private verifyAPIKey = () => {
+  #verifyAPIKey = () => {
     return this.createChatCompletion([
       {
         role: 'user',
@@ -40,14 +40,12 @@ export class OpenAI {
     ]);
   };
 
-  public createChatCompletion = async (
-    messages: ChatCompletionRequestMessage[]
-  ) => {
+  createChatCompletion = async (messages: ChatCompletionRequestMessage[]) => {
     const model = OPENAI_API_DEFAULT_MODEL;
     const temperature = OPENAI_API_DEFAULT_TEMPERATURE;
     const stream = OPENAI_API_DEFAULT_STREAM;
 
-    return await this.client.createChatCompletion({
+    return await this.#client.createChatCompletion({
       model,
       temperature,
       messages,
