@@ -21,9 +21,10 @@ const options: LoggerOptions = {
 
 try {
   logger = createLogger(options);
-  logger.info('Logger loaded');
+  logger.info('Logger initialized.');
 } catch (error) {
-  throw new Error('Failed to load logger: ' + error);
+  console.error('Error when initializing logger.');
+  process.exit(1);
 }
 
 export default logger;
