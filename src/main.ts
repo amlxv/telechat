@@ -5,9 +5,7 @@ import { Configuration, OpenAIApi } from 'openai';
 import { Context, Telegraf } from 'telegraf';
 import { message } from 'telegraf/filters';
 import type { Message, Update } from 'telegraf/types';
-import { loadLogger } from './utils.js';
-
-const logger = loadLogger;
+import logger from './utils/logger';
 
 dotenv.config();
 
