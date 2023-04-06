@@ -1,4 +1,3 @@
-import dotenv from 'dotenv';
 import express from 'express';
 import type { ChatCompletionRequestMessage } from 'openai';
 import { Context, Telegraf } from 'telegraf';
@@ -12,10 +11,11 @@ import {
   START_NEW_CONVERSATION_MESSAGE,
   TELEGRAM_INITIAL_RESPONSE_MESSAGE,
 } from './utils/constants';
+import { init } from './utils/init';
 import logger from './utils/logger';
 import { OpenAI } from './utils/openai';
 
-dotenv.config();
+init();
 
 const app = express();
 const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN!);
