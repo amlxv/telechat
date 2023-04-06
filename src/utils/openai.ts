@@ -17,6 +17,7 @@ export class OpenAI {
     this.#verifyAPIKey()
       .then(() => {
         logger.info("OpenAI's API key is valid");
+        logger.info('The bot is ready to use!s');
       })
       .catch((error) => {
         logger.error(error?.response?.data?.error?.message ?? error);
@@ -35,7 +36,7 @@ export class OpenAI {
     return this.createChatCompletion([
       {
         role: 'user',
-        content: 'Hello',
+        content: 'Hi',
       },
     ]);
   };
