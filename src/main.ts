@@ -1,3 +1,4 @@
+import type { Express } from 'express';
 import express from 'express';
 import type { ChatCompletionRequestMessage } from 'openai';
 import { Context, Telegraf } from 'telegraf';
@@ -17,17 +18,17 @@ import { OpenAI } from './utils/openai';
 
 init();
 
-const app = express();
+const app: Express = express();
 const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN!);
 const { createChatCompletion } = new OpenAI(process.env.OPENAI_API_KEY!);
 
 bot
   .createWebhook({ domain: process.env.TELEGRAM_WEBHOOK_URL! })
-  .then((webhook) => {
+  .then((webhook): void => {
     app.use(webhook);
     logger.info('Webhook created');
   })
-  .catch((error) => {
+  .catch((error: any): void => {
     logger.error(error);
   });
 
@@ -38,7 +39,7 @@ const messages: ChatCompletionRequestMessage[] = [
   },
 ];
 
-bot.on(message('text'), async (ctx) => {
+bot.on(message('text'), async (ctx): Promise<void> => {
   logger.info(`[${ctx.message.from?.username}]: ${ctx.message.text}`);
   if (!(ctx.from.username === 'amlxv')) return;
 
@@ -57,7 +58,7 @@ bot.on(message('text'), async (ctx) => {
 
 const handleRequest = async (
   ctx: Context<Update.MessageUpdate<Message.TextMessage>>
-) => {
+): Promise<void> => {
   try {
     messages.push({
       role: 'user',
@@ -65,8 +66,8 @@ const handleRequest = async (
     });
     logger.info(PROCESSING_REQUEST_MESSAGE);
 
-    let responseText = TELEGRAM_INITIAL_RESPONSE_MESSAGE;
-    const response = await ctx.reply(responseText);
+    let responseText: string = TELEGRAM_INITIAL_RESPONSE_MESSAGE;
+    const response: Message.TextMessage = await ctx.reply(responseText);
 
     const completion = await createChatCompletion(messages);
 
@@ -94,6 +95,6 @@ const handleRequest = async (
   }
 };
 
-app.listen(process.env.TELEGRAM_WEBHOOK_PORT, () => {
+app.listen(process.env.TELEGRAM_WEBHOOK_PORT, (): void => {
   logger.info(`Bot ready on port: ${process.env.TELEGRAM_WEBHOOK_PORT}!`);
 });
