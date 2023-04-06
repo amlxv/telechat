@@ -5,7 +5,7 @@
   "main": "src/main.js",
   "scripts": {
     "build": "ts-node --esm esbuild.config.ts",
-    "dev": "npm run build && node dist/main.js"
+    "watch": "npm run build && pm2 start dist/main.js --watch"
   },
   "type": "module",
   "keywords": [
