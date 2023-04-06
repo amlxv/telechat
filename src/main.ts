@@ -44,13 +44,14 @@ bot.on(message('text'), async (ctx): Promise<void> => {
   if (!(ctx.from.username === 'amlxv')) return;
 
   if (ctx.message.text === '/new') {
+    ctx.reply(START_NEW_CONVERSATION_MESSAGE);
+    logger.info(START_NEW_CONVERSATION_MESSAGE);
+
     messages.length = 0;
     messages.push({
       role: 'system',
       content: OPENAI_API_DEFAULT_SYSTEM_MESSAGE,
     });
-    ctx.reply(START_NEW_CONVERSATION_MESSAGE);
-    logger.info(START_NEW_CONVERSATION_MESSAGE);
     return;
   }
   await handleRequest(ctx);
