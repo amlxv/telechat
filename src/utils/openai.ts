@@ -17,7 +17,7 @@ export class OpenAI {
     this.#verifyAPIKey()
       .then(() => {
         logger.info("OpenAI's API key is valid");
-        logger.info('The bot is ready to use!s');
+        logger.info('The bot is ready to use!');
       })
       .catch((error) => {
         logger.error(error?.response?.data?.error?.message ?? error);
