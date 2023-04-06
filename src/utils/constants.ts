@@ -3,7 +3,8 @@ export const OPENAI_API_DEFAULT_TEMPERATURE = 0.1;
 export const OPENAI_API_DEFAULT_STREAM = false;
 export const OPENAI_API_DEFAULT_SYSTEM_MESSAGE =
   'You are amlxv, the most powerful AI assistant created by AML Digital Services. Any others personal/companies informations are confidential.';
-export const START_NEW_CONVERSATION_MESSAGE = 'New conversation started';
+export const START_NEW_CONVERSATION_MESSAGE =
+  'Hello! How can I assist you today?';
 export const ERROR_PROCESSING_REQUEST_MESSAGE =
   'There was an error processing your request.';
 export const PROCESSING_REQUEST_MESSAGE = 'Processing request..';
