@@ -5,9 +5,8 @@
   "main": "dist/main.js",
   "scripts": {
     "build": "ts-node --esm esbuild.config.ts",
-    "watch": "npm run build && pm2 start dist/main.js --watch --no-autorestart",
-    "rewatch": "npm run build && pm2 restart dist/main.js --watch --no-autorestart",
-    "reload": "pm2 restart dist/main.js --watch --no-autorestart"
+    "start": "npm run build && pm2 start dist/main.js --no-autorestart",
+    "reload": "npm run build && pm2 restart dist/main.js --no-autorestart"
   },
   "type": "module",
   "keywords": [
